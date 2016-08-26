@@ -1,5 +1,13 @@
 #!/bin/bash
 
+cleanup()
+{
+	echo; echo "Cleaning up..."
+	rm -rf strongswan-* 2>/dev/null
+	exit 1;
+}
+trap "cleanup" INT EXIT
+
 VER=${VER:=5.4.0}
 ITER=${ITER:=1}
 
@@ -33,6 +41,8 @@ if [[ -f strongswan-mysql-${VER}-${ITER}.x86_64.rpm ]]
 then
 	echo "RPM built!!"
 	ls -lh /root/strongswan-${VER}/*.rpm
+	echo " ======   md5sum   ======="; echo;
+	md5sum /root/strongswan-${VER}/*.rpm
 	cp /root/strongswan-${VER}/*.rpm /mnt/
 	exit 0
 else
