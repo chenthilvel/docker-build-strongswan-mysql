@@ -2,9 +2,9 @@
 
 cleanup()
 {
-	echo; echo "Cleaning up..."
-	rm -rf strongswan-* 2>/dev/null
-	exit 1;
+        echo; echo "Cleaning up..."
+        rm -rf strongswan-* 2>/dev/null
+        exit 1;
 }
 trap "cleanup" INT EXIT
 
@@ -14,8 +14,8 @@ ITER=${ITER:=1}
 
 if ! curl --output /dev/null --silent --head --fail https://download.strongswan.org/strongswan-${VER}.tar.gz
 then
-	echo "StrongSwan version $VER doesn't exist"
-	exit 1
+        echo "StrongSwan version $VER doesn't exist"
+        exit 1
 fi
 
 echo "Downloading StrongSwan $VER source ..."
@@ -39,13 +39,13 @@ fpm -s dir -t rpm -C /tmp/strongswan --name strongswan-mysql --version ${VER}  -
 
 if [[ -f strongswan-mysql-${VER}-${ITER}.x86_64.rpm ]]
 then
-	echo "RPM built!!"
-	ls -lh /root/strongswan-${VER}/*.rpm
-	echo " ======   md5sum   ======="; echo;
-	md5sum /root/strongswan-${VER}/*.rpm
-	cp /root/strongswan-${VER}/*.rpm /mnt/
-	exit 0
+        echo "RPM built!!"
+        ls -lh /root/strongswan-${VER}/*.rpm
+        echo " ======   md5sum   ======="; echo;
+        md5sum /root/strongswan-${VER}/*.rpm
+        cp /root/strongswan-${VER}/*.rpm /mnt/
+        exit 0
 else
-	echo "Failed to build RPM"
-	exit 1
+        echo "Failed to build RPM"
+        exit 1
 fi
