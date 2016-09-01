@@ -13,14 +13,9 @@ Docker Image to download strongSwan source, compile with MySQL support and packa
  + Run the container with the required version and iteration count
     
 ``` 
-    docker run -e VER=5.5.0 -e ITER=2 chenthilvel/build-strongswan-mysql
+    docker run -e VER=5.5.0 -e ITER=2 --name sswan_rpm chenthilvel/build-strongswan-mysql
 ```
- + Post docker run, find the container id used with: 
-```  
-    docker ps -a 
-```
-
- + Copy RPM to local directory
+ + Post docker run, Copy RPM to local directory
 ``` 
-    docker cp <CONTAINERID>:/root/strongswan-5.5.0/strongswan-mysql-5.5.0-2.x86_64.rpm .
+    docker cp sswan_rpm:/root/strongswan-5.5.0/strongswan-mysql-5.5.0-2.x86_64.rpm .
 ```
