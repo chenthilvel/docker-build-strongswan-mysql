@@ -34,8 +34,11 @@ mkdir -p /tmp/strongswan/etc/init.d
 cp /root/strongswan /tmp/strongswan/etc/init.d/
 chmod +x /tmp/strongswan/etc/init.d/strongswan
 
+# Get MySQL version to add mysql-community-libs-compat as dependency [Provides /usr/lib64/mysql/libmysqlclient.so.16]
+MYSQL_VER=`rpm -q --queryformat '%{VERSION}' mysql-community-devel`
+
 source /etc/profile.d/rvm.sh
-fpm -s dir -t rpm -C /tmp/strongswan --name strongswan-mysql --version ${VER}  --iteration ${ITER} --after-install /root/postinstall --before-remove /root/preuninstall --after-remove /root/postuninstall --url "http://www.strongswan.org/" --description "Custom built strongSwan ${VER} with MySQL support"
+fpm -s dir -t rpm -C /tmp/strongswan --name strongswan-mysql --version ${VER}  --iteration ${ITER} --after-install /root/postinstall --before-remove /root/preuninstall --after-remove /root/postuninstall --url "http://www.strongswan.org/" --description "Custom built strongSwan ${VER} with MySQL support" -d "mysql-community-libs-compat >= ${MYSQL_VER}"
 
 if [[ -f strongswan-mysql-${VER}-${ITER}.x86_64.rpm ]]
 then
