@@ -10,7 +10,7 @@ trap "cleanup" INT EXIT
 
 VER=${VER:=5.4.0}
 ITER=${ITER:=1}
-
+UPL=${UPL:=0} # Disable Repo upload by default
 
 if ! curl --output /dev/null --silent --head --fail https://download.strongswan.org/strongswan-${VER}.tar.gz
 then
@@ -40,13 +40,17 @@ MYSQL_VER=`rpm -q --queryformat '%{VERSION}' mysql-community-devel`
 source /etc/profile.d/rvm.sh
 fpm -s dir -t rpm -C /tmp/strongswan --name strongswan-mysql --version ${VER}  --iteration ${ITER} --after-install /root/postinstall --before-remove /root/preuninstall --after-remove /root/postuninstall --url "http://www.strongswan.org/" --description "Custom built strongSwan ${VER} with MySQL support" -d "mysql-community-libs-compat >= ${MYSQL_VER}"
 
-if [[ -f strongswan-mysql-${VER}-${ITER}.x86_64.rpm ]]
+if [[ $? -eq 0 && -f strongswan-mysql-${VER}-${ITER}.x86_64.rpm ]]
 then
         echo "RPM built!!"
         ls -lh /root/strongswan-${VER}/*.rpm
         echo " ======   md5sum   ======="; echo;
         md5sum /root/strongswan-${VER}/*.rpm
         cp /root/strongswan-${VER}/*.rpm /mnt/
+        if [[ ${UPL} -eq 1 ]]
+        then
+            curl -F "r=${REPO}" -F "g=org.strongswan" -F "a=strongswan" -F "v=${VER}" -F "p=rpm" -F "e=rpm" -F "file=@./strongswan-mysql-${VER}-${ITER}.x86_64.rpm" -u ${USER_PASS} http://${NEXUS_HOST}/service/local/artifact/maven/content
+        fi
         exit 0
 else
         echo "Failed to build RPM"
