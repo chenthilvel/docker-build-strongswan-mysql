@@ -49,7 +49,7 @@ then
         cp /root/strongswan-${VER}/*.rpm /mnt/
         if [[ ${UPL} -eq 1 ]]
         then
-            curl -F "r=${REPO}" -F "g=org.strongswan" -F "a=strongswan" -F "v=${VER}" -F "p=rpm" -F "e=rpm" -F "file=@./strongswan-mysql-${VER}-${ITER}.x86_64.rpm" -u ${USER_PASS} http://${NEXUS_HOST}/service/local/artifact/maven/content
+            curl -F "r=${REPO}" -F "g=org.strongswan" -F "a=strongswan-mysql" -F "v=${VER}" -F "p=rpm" -F "e=rpm" -F "file=@./strongswan-mysql-${VER}-${ITER}.x86_64.rpm" -u ${USER_PASS} http://${NEXUS_HOST}/service/local/artifact/maven/content
         fi
         exit 0
 else
