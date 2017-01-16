@@ -1,3 +1,4 @@
 /sbin/ldconfig
-/sbin/chkconfig --add strongswan
 /usr/bin/chcon -t etc_t /etc/init.d/strongswan
+/usr/bin/chcon -t ipsec_exec_t /usr/libexec/ipsec/starter
+/sbin/chkconfig --add strongswan
